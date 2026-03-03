@@ -1,6 +1,6 @@
 # 🚀 ForoHub API – Backend Challenge
 
-API REST profesional desarrollada con **Java 17 + Spring Boot 3.5.11** para el reto ForoHub de Alura. Replica el backend de un sistema de foro con autenticación JWT, CRUD de tópicos, validaciones de negocio y persistencia MySQL.
+API REST profesional desarrollada con **Java 17 + Spring Boot 3.5.11** para el reto ForoHub de Alura. Es un sistema de foro con autenticación JWT, CRUD de tópicos, validaciones de negocio y persistencia MySQL.
 
 ---
 ## 📸 Capturas del Proyecto ForoHub
