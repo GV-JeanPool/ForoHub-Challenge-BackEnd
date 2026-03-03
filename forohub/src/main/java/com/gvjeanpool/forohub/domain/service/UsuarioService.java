@@ -2,15 +2,12 @@ package com.gvjeanpool.forohub.domain.service;
 
 import com.gvjeanpool.forohub.domain.dto.UsuarioRequestDTO;
 import com.gvjeanpool.forohub.domain.dto.UsuarioResponseDTO;
-import com.gvjeanpool.forohub.domain.model.Perfil;
 import com.gvjeanpool.forohub.domain.model.Usuario;
 import com.gvjeanpool.forohub.domain.repository.PerfilRepository;
 import com.gvjeanpool.forohub.domain.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class UsuarioService {
@@ -19,9 +16,9 @@ public class UsuarioService {
     private final PerfilRepository perfilRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, 
-                          PerfilRepository perfilRepository,
-                          PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository,
+            PerfilRepository perfilRepository,
+            PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.perfilRepository = perfilRepository;
         this.passwordEncoder = passwordEncoder;
@@ -38,9 +35,9 @@ public class UsuarioService {
         usuario.setCorreoElectronico(request.getCorreoElectronico());
         usuario.setContrasena(passwordEncoder.encode(request.getContrasena()));
 
-        // Add default role
-        List<Perfil> perfiles = perfilRepository.findAll();
-        usuario.getPerfiles().addAll(perfiles);
+        // Asignar solo el rol por defecto ROLE_USER (nunca ROLE_ADMIN al registrarse)
+        perfilRepository.findByNombre("ROLE_USER")
+                .ifPresent(perfil -> usuario.getPerfiles().add(perfil));
 
         Usuario saved = usuarioRepository.save(usuario);
         return new UsuarioResponseDTO(saved);

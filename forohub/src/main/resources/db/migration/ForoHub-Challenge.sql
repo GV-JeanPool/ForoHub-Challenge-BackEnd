@@ -1,4 +1,3 @@
--- V1__create_tables.sql
 -- Create all tables for ForoHub
 
 -- Table: curso

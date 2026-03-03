@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
 public class AuthController {
 
     private final AuthenticationService authenticationService;
@@ -22,13 +21,21 @@ public class AuthController {
         this.usuarioService = usuarioService;
     }
 
+    // Endpoint principal requerido por el challenge: POST /login
     @PostMapping("/login")
     public ResponseEntity<TokenDTO> login(@Valid @RequestBody AuthenticationDTO request) {
         TokenDTO token = authenticationService.authenticate(request);
         return ResponseEntity.ok(token);
     }
 
-    @PostMapping("/register")
+    // Endpoint alternativo bajo /auth/login (mantiene compatibilidad)
+    @PostMapping("/auth/login")
+    public ResponseEntity<TokenDTO> authLogin(@Valid @RequestBody AuthenticationDTO request) {
+        TokenDTO token = authenticationService.authenticate(request);
+        return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("/auth/register")
     public ResponseEntity<UsuarioResponseDTO> register(@Valid @RequestBody UsuarioRequestDTO request) {
         UsuarioResponseDTO response = usuarioService.crearUsuario(request);
         return ResponseEntity.ok(response);

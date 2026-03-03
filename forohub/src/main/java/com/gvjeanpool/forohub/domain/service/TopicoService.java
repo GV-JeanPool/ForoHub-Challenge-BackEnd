@@ -26,9 +26,9 @@ public class TopicoService {
     private final CursoRepository cursoRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public TopicoService(TopicoRepository topicoRepository, 
-                         CursoRepository cursoRepository,
-                         UsuarioRepository usuarioRepository) {
+    public TopicoService(TopicoRepository topicoRepository,
+            CursoRepository cursoRepository,
+            UsuarioRepository usuarioRepository) {
         this.topicoRepository = topicoRepository;
         this.cursoRepository = cursoRepository;
         this.usuarioRepository = usuarioRepository;
@@ -36,9 +36,9 @@ public class TopicoService {
 
     @Transactional
     public TopicoResponseDTO crearTopico(TopicoRequestDTO request, Long usuarioId) {
-        // Check for duplicate by title only (UNIQUE constraint in DB)
-        if (topicoRepository.existsByTitulo(request.getTitulo())) {
-            throw new DuplicateTopicException("Ya existe un tópico con el título: " + request.getTitulo());
+        // Verificar duplicado por titulo + mensaje (regla de negocio del challenge)
+        if (topicoRepository.existsByTituloAndMensaje(request.getTitulo(), request.getMensaje())) {
+            throw new DuplicateTopicException(request.getTitulo(), request.getMensaje());
         }
 
         // Get course
@@ -82,12 +82,12 @@ public class TopicoService {
         Topico topico = topicoRepository.findById(id)
                 .orElseThrow(() -> new TopicNotFoundException(id));
 
-        // Check for duplicate title (excluding current topic)
-        Topico duplicate = topicoRepository.findByTitulo(request.getTitulo())
+        // Verificar duplicado por titulo + mensaje (excluyendo el tópico actual)
+        Topico duplicate = topicoRepository.findByTituloAndMensaje(request.getTitulo(), request.getMensaje())
                 .orElse(null);
-        
+
         if (duplicate != null && !duplicate.getId().equals(id)) {
-            throw new DuplicateTopicException("Ya existe un tópico con el título: " + request.getTitulo());
+            throw new DuplicateTopicException(request.getTitulo(), request.getMensaje());
         }
 
         // Update course if provided

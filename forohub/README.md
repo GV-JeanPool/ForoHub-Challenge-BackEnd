@@ -1,315 +1,272 @@
-# ForoHub - API REST Backend
+# 🚀 ForoHub API – Backend Challenge
 
-## Descripción del Proyecto
+API REST profesional desarrollada con **Java 17 + Spring Boot 3.5.11** para el reto ForoHub de Alura. Replica el backend de un sistema de foro con autenticación JWT, CRUD de tópicos, validaciones de negocio y persistencia MySQL.
 
-ForoHub es una API REST profesional desarrollada con Java 17 y Spring Boot 3.5.11 para la gestión de un sistema de foros, inspirado en el foro de Alura. Permite realizar operaciones CRUD completas sobre tópicos, con autenticación JWT y persistencia en MySQL.
+---
 
-## 🚀 Tecnologías Utilizadas
+## 🛠️ Tecnologías Utilizadas
 
-- **Java 17**
-- **Spring Boot 3.5.11**
-- **Spring Security** (Autenticación y Autorización)
-- **JWT** (JSON Web Tokens)
-- **Spring Data JPA** (Persistencia)
-- **Flyway** (Migraciones de base de datos)
-- **MySQL 8.x**
-- **Maven**
-- **Lombok**
+| Tecnología | Versión |
+|------------|---------|
+| Java | 17 |
+| Spring Boot | 3.5.11 |
+| Spring Security | 6.x |
+| Spring Data JPA | 3.x |
+| MySQL | 8.x |
+| Flyway | 10.x |
+| Auth0 Java JWT | 4.4.0 |
+| Lombok | Latest |
+| Maven | 3.x |
+
+---
 
 ## ⚙️ Configuración del Entorno
 
-### Prerequisites
+### 1. Prerrequisitos
 
-- Java 17 o superior
-- Maven 3.8+
-- MySQL 8.x
+- Java 17 instalado
+- MySQL 8.x corriendo en el **puerto 3307** (no el default 3306)
+- Maven 3.x instalado
 
-### Configuración de Base de Datos
+### 2. Configurar Base de Datos
 
-El proyecto está configurado para usar MySQL en el puerto 3307:
-
+Crea la base de datos en MySQL Workbench (puerto 3307):
+```sql
+CREATE DATABASE IF NOT EXISTS forohub 
+  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
-properties
-spring.datasource.url=jdbc:mysql://localhost:3307/forohub
+
+> ⚠️ **Importante:** El proyecto usa el puerto **3307**, no el 3306.
+
+### 3. Configurar `application.properties`
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3307/forohub?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
 spring.datasource.username=root
-spring.datasource.password=root
-```
+spring.datasource.password=TU_PASSWORD_AQUI
 
-### Configuración JWT
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
 
-```
-properties
 jwt.secret=clave_super_secreta_para_el_proyecto_de_forohub_alura_2026
 jwt.expiration=3600000
 ```
 
-## 📋 Endpoints de la API
+### 4. Ejecutar el Proyecto
 
-### Autenticación
-
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| POST | `/auth/login` | Iniciar sesión y obtener token JWT |
-| POST | `/auth/register` | Registrar nuevo usuario |
-
-### Tópicos (CRUD)
-
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| GET | `/topicos` | Listar todos los tópicos (con paginación) |
-| GET | `/topicos/{id}` | Obtener un tópico específico |
-| POST | `/topicos` | Crear un nuevo tópico |
-| PUT | `/topicos/{id}` | Actualizar un tópico existente |
-| DELETE | `/topicos/{id}` | Eliminar un tópico |
-
-### Parámetros de Query
-
-- `page`: Número de página (0-indexed)
-- `size`: Tamaño de página
-- `sort`: Campo de ordenamiento (ej: `fechaCreacion`)
-- `curso`: Filtrar por nombre de curso
-
-## 📥 Ejemplos de Requests y Responses
-
-### Registrar Usuario
-
-**Request:**
+```bash
+git clone https://github.com/GV-JeanPool/ForoHub-Challenge-BackEnd.git
+cd forohub
+mvn spring-boot:run
 ```
-json
-POST /auth/register
+
+Flyway ejecutará automáticamente las migraciones y creará todas las tablas al iniciar.
+
+---
+
+## 🗄️ Diagrama de Base de Datos
+
+```
+┌─────────────┐       ┌──────────────┐       ┌──────────────┐
+│   USUARIO   │       │    TOPICO    │       │    CURSO     │
+├─────────────┤       ├──────────────┤       ├──────────────┤
+│ id (PK)     │──┐    │ id (PK)      │       │ id (PK)      │
+│ nombre      │  └───>│ autor_id(FK) │   ┌──>│ nombre       │
+│ correo      │       │ curso_id(FK) │───┘   │ categoria    │
+│ contrasena  │  ┌───>│ titulo       │       └──────────────┘
+└─────────────┘  │    │ mensaje      │
+       │         │    │ fecha_creacion│
+       │         │    │ status       │       ┌──────────────┐
+       ▼         │    │ UNIQUE(titulo│       │    PERFIL    │
+┌─────────────┐  │    │  ,mensaje)   │       ├──────────────┤
+│USUARIO_PERFIL│  │   └──────────────┘       │ id (PK)      │
+├─────────────┤  │                           │ nombre       │
+│usuario_id   │  │    ┌──────────────┐       └──────────────┘
+│perfil_id    │  │    │   RESPUESTA  │
+└─────────────┘  │    ├──────────────┤
+                 │    │ id (PK)      │
+                 └───>│ autor_id(FK) │
+                      │ topico_id(FK)│
+                      │ mensaje      │
+                      │ fecha_creacion│
+                      │ solucion     │
+                      └──────────────┘
+```
+
+---
+
+## 🔐 Autenticación con JWT
+
+### Registrar un usuario
+**`POST /auth/register`**
+
+```json
+// Request Body
 {
-  "nombre": "Jean Pool",
-  "correoElectronico": "jean@ejemplo.com",
-  "contrasena": "password123"
+  "nombre": "Juan Pérez",
+  "correoElectronico": "juan@example.com",
+  "contrasena": "miPassword123"
 }
-```
 
-**Response:**
-```
-json
+// Response 200 OK
 {
   "id": 1,
-  "nombre": "Jean Pool",
-  "correoElectronico": "jean@ejemplo.com",
-  "perfiles": ["ROLE_USER", "ROLE_ADMIN"]
+  "nombre": "Juan Pérez",
+  "correoElectronico": "juan@example.com"
 }
 ```
 
-### Iniciar Sesión
+### Obtener Token JWT
+**`POST /login`**
 
-**Request:**
-```
-json
-POST /auth/login
+```json
+// Request Body
 {
-  "correoElectronico": "jean@ejemplo.com",
-  "contrasena": "password123"
+  "correoElectronico": "juan@example.com",
+  "contrasena": "miPassword123"
+}
+
+// Response 200 OK
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
-**Response:**
-```
-json
+> Usa el token en todos los demás requests como header:
+> `Authorization: Bearer eyJhbGci...`
+
+---
+
+## 📌 Endpoints – CRUD Tópicos
+
+Todos los endpoints requieren autenticación JWT.
+
+### `POST /topicos` – Crear tópico
+```json
+// Request Body
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "type": "Bearer"
-}
-```
-
-### Crear Tópico
-
-**Request:**
-```
-json
-POST /topicos
-Authorization: Bearer {TOKEN}
-
-{
-  "titulo": "Cómo usar Spring Boot?",
-  "mensaje": "Necesito ayuda para comenzar con Spring Boot",
+  "titulo": "¿Cómo usar Spring Security?",
+  "mensaje": "Tengo problemas configurando Spring Security con JWT...",
   "cursoId": 1
 }
-```
 
-**Response (201 Created):**
-```
-json
+// Response 201 Created
 {
   "id": 1,
-  "titulo": "Cómo usar Spring Boot?",
-  "mensaje": "Necesito ayuda para comenzar con Spring Boot",
-  "fechaCreacion": "2026-01-15T10:30:00",
+  "titulo": "¿Cómo usar Spring Security?",
+  "mensaje": "Tengo problemas configurando Spring Security con JWT...",
+  "fechaCreacion": "2026-03-02T22:00:00",
   "status": "NO_RESPONDIDO",
-  "autorNombre": "Jean Pool",
-  "autorCorreo": "jean@ejemplo.com",
+  "autorNombre": "Juan Pérez",
+  "autorCorreo": "juan@example.com",
   "cursoNombre": "Java Spring Boot",
   "cursoCategoria": "Backend"
 }
 ```
 
-### Listar Tópicos
-
-**Request:**
+### `GET /topicos` – Listar tópicos (paginado)
 ```
-http
 GET /topicos?page=0&size=10&sort=fechaCreacion,asc
-Authorization: Bearer {TOKEN}
+GET /topicos?curso=Java Spring Boot
 ```
-
-**Response:**
-```
-json
+```json
+// Response 200 OK
 {
   "content": [...],
-  "totalElements": 50,
-  "totalPages": 5,
-  "size": 10,
-  "number": 0
+  "totalElements": 5,
+  "totalPages": 1,
+  "number": 0,
+  "size": 10
 }
 ```
 
-## 🏗️ Diagrama de Base de Datos
+### `GET /topicos/{id}` – Obtener un tópico
+```json
+// Response 200 OK
+{
+  "id": 1,
+  "titulo": "¿Cómo usar Spring Security?",
+  ...
+}
 
-```
-┌─────────────┐       ┌─────────────┐
-│   curso     │       │   perfil    │
-├─────────────┤       ├─────────────┤
-│ id (PK)     │       │ id (PK)     │
-│ nombre      │       │ nombre      │
-│ categoria   │       └─────────────┘
-└─────────────┘            │
-                           │
-┌─────────────┐            │
-│  usuario    │            │
-├─────────────┤       ┌──────────────────┐
-│ id (PK)     │       │ usuario_perfil   │
-│ nombre      │       ├──────────────────┤
-│ correo      │       │ usuario_id (FK)  │
-│ contrasena  │◄──────│ perfil_id (FK)   │
-└─────────────┘       └──────────────────┘
-       │
-       │                 ┌─────────────┐
-       │                 │   topico    │
-       │                 ├─────────────┤
-       │                 │ id (PK)     │
-       │                 │ titulo      │
-       │                 │ mensaje     │
-       │                 │ fecha_creacion
-       │                 │ status      │
-       │                 │ autor_id(FK)│
-       └───────────────►│ curso_id(FK)│
-                         └─────────────┘
-                                │
-                                │                 ┌─────────────┐
-                                │                 │  respuesta  │
-                                │                 ├─────────────┤
-                                └───────────────►│ id (PK)     │
-                                                 │ mensaje     │
-                                                 │ topico_id   │
-                                                 │ fecha_creac │
-                                                 │ autor_id    │
-                                                 │ solucion    │
-                                                 └─────────────┘
+// Response 404 Not Found (si no existe)
+{
+  "status": 404,
+  "error": "Not Found",
+  "message": "Tópico no encontrado con ID: 99"
+}
 ```
 
-## 🔒 Seguridad
-
-- Autenticación basada en JWT (JSON Web Tokens)
-- Contraseñas encriptadas con BCrypt
-- Roles: ROLE_USER, ROLE_ADMIN
-- Endpoints protegidos con Spring Security
-
-## 📦 Cómo Ejecutar el Proyecto
-
-1. **Clonar el repositorio:**
-   
-```
-bash
-   git clone https://github.com/GV-JeanPool/ForoHub-Challenge-BackEnd.git
-   cd forohub
-   
+### `PUT /topicos/{id}` – Actualizar tópico
+```json
+// Request Body
+{
+  "titulo": "¿Cómo configurar JWT en Spring Boot?",
+  "mensaje": "Mensaje actualizado...",
+  "cursoId": 1
+}
+// Response 200 OK
 ```
 
-2. **Configurar MySQL:**
-   - Asegurarse de tener MySQL corriendo en el puerto 3307
-   - Crear la base de datos:
-   
+### `DELETE /topicos/{id}` – Eliminar tópico
 ```
-sql
-   CREATE DATABASE forohub;
-   
+// Response 204 No Content
 ```
-
-3. **Compilar y ejecutar:**
-   
-```
-bash
-   ./mvnw spring-boot:run
-   
-```
-
-4. **La API estará disponible en:**
-   
-```
-   http://localhost:8080
-   
-```
-
-## 🔑 Cómo Generar Token JWT
-
-1. Registrar un usuario:
-   
-```
-bash
-   curl -X POST http://localhost:8080/auth/register \
-     -H "Content-Type: application/json" \
-     -d '{"nombre":"Usuario","correoElectronico":"test@test.com","contrasena":"123456"}'
-   
-```
-
-2. Iniciar sesión para obtener el token:
-   
-```
-bash
-   curl -X POST http://localhost:8080/auth/login \
-     -H "Content-Type: application/json" \
-     -d '{"correoElectronico":"test@test.com","contrasena":"123456"}'
-   
-```
-
-3. Usar el token en las requests:
-   
-```
-bash
-   curl -X GET http://localhost:8080/topicos \
-     -H "Authorization: Bearer {TOKEN}"
-   
-```
-
-## 📝 Validaciones Implementadas
-
-- Todos los campos son obligatorios
-- No se permiten tópicos duplicados (título + mensaje)
-- Solo usuarios autenticados pueden interactuar con la API
-- Validación de correo electrónico
-
-## 📊 Códigos de Respuesta HTTP
-
-| Código | Descripción |
-|--------|-------------|
-| 200 OK | Solicitud exitosa |
-| 201 Created | Recurso creado exitosamente |
-| 204 No Content | Eliminación exitosa |
-| 400 Bad Request | Error de validación |
-| 401 Unauthorized | No autenticado |
-| 404 Not Found | Recurso no encontrado |
-| 500 Internal Server Error | Error del servidor |
-
-## 📄 Licencia
-
-Este proyecto es parte del Challenge de Alura - ONE (Oracle Next Education).
 
 ---
 
-**Autor:** GV-JeanPool  
-**Versión:** 1.0.0
+## ⚠️ Códigos de Respuesta HTTP
+
+| Código | Descripción |
+|--------|-------------|
+| 200 | OK |
+| 201 | Tópico creado exitosamente |
+| 204 | Tópico eliminado exitosamente |
+| 400 | Datos inválidos o tópico duplicado |
+| 401 | Token JWT inválido o credenciales incorrectas |
+| 404 | Tópico o curso no encontrado |
+
+---
+
+## 📋 Reglas de Negocio
+
+1. **Todos los campos son obligatorios** al crear un tópico
+2. **No se permiten duplicados**: la combinación `titulo + mensaje` debe ser única
+3. **Solo usuarios autenticados** pueden acceder a los endpoints de tópicos
+4. Al registrarse, el usuario recibe el rol **`ROLE_USER`** automáticamente
+
+---
+
+## 🧪 Cómo Probar con Insomnia/Postman
+
+1. **Crear usuario** → `POST /auth/register`
+2. **Login** → `POST /login` → copiar el token
+3. **Configurar** el header `Authorization: Bearer <token>` en las demás peticiones
+4. **Probar CRUD** de tópicos
+
+---
+
+## 🏗️ Arquitectura del Proyecto
+
+```
+src/main/java/com/gvjeanpool/forohub/
+├── domain/
+│   ├── dto/           # DTOs de request/response
+│   ├── exception/     # Excepciones de negocio personalizadas
+│   ├── model/         # Entidades JPA
+│   ├── repository/    # Interfaces JpaRepository
+│   └── service/       # Lógica de negocio
+├── infrastructure/
+│   ├── controller/    # Controladores REST
+│   ├── exception/     # GlobalExceptionHandler
+│   └── security/      # JWT, SecurityConfig, Filter
+└── ForohubApplication.java
+```
+
+---
+
+## 👨‍💻 Autor
+
+**GV-JeanPool** – Reto ForoHub Challenge – Alura 2026  
+🔗 [GitHub del Proyecto](https://github.com/GV-JeanPool/ForoHub-Challenge-BackEnd)
