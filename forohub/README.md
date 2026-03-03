@@ -3,6 +3,85 @@
 API REST profesional desarrollada con **Java 17 + Spring Boot 3.5.11** para el reto ForoHub de Alura. Replica el backend de un sistema de foro con autenticación JWT, CRUD de tópicos, validaciones de negocio y persistencia MySQL.
 
 ---
+## 📸 Capturas del Proyecto ForoHub
+
+---
+
+## 🧠 1️⃣ Código Principal (Spring Boot)
+
+<p align="center">
+  <img src="assets/codigo-principal.png" width="800"/>
+</p>
+
+---
+
+## 🗄 2️⃣ Configuración Base de Datos MySQL
+
+<p align="center">
+  <img src="assets/mysql-config.png" width="800"/>
+</p>
+
+---
+
+# 🔐 Pruebas de Autenticación
+
+## ✅ Test 1 – Registrar Usuario
+
+<p align="center">
+  <img src="assets/RegistrarUsuario.png" width="800"/>
+</p>
+
+---
+
+## ✅ Test 2 – Login y Obtener Token JWT
+
+<p align="center">
+  <img src="assets/LoginObtenerToken.png" width="800"/>
+</p>
+
+---
+
+# 📝 Pruebas CRUD de Tópicos
+
+## ✅ Test 3 – Crear Tópico
+
+<p align="center">
+  <img src="assets/POST-CrearTopico.png" width="800"/>
+</p>
+
+---
+
+## ✅ Test 4 – Listar Tópicos
+
+<p align="center">
+  <img src="assets/GET-ListarTopicos.png" width="800"/>
+</p>
+
+---
+
+## ✅ Test 5 – Obtener Tópico por ID
+
+<p align="center">
+  <img src="assets/GET-ObtenerTopico.png" width="800"/>
+</p>
+
+---
+
+## ✅ Test 6 – Actualizar Tópico
+
+<p align="center">
+  <img src="assets/PUT-ActualizarTopico.png" width="800"/>
+</p>
+
+---
+
+## ✅ Test 7 – Eliminar Tópico
+
+<p align="center">
+  <img src="assets/DELETE-EliminarTopico.png" width="800"/>
+</p>
+
+---
 
 ## 🛠️ Tecnologías Utilizadas
 
