@@ -10,7 +10,7 @@ API REST profesional desarrollada con **Java 17 + Spring Boot 3.5.11** para el r
 ## 🧠 1️⃣ Código Principal (Spring Boot)
 
 <p align="center">
-  <img src="assets/codigo-principal.png" width="800"/>
+  <img src="forohub/assets/codigo-principal.png" width="800"/>
 </p>
 
 ---
@@ -18,7 +18,7 @@ API REST profesional desarrollada con **Java 17 + Spring Boot 3.5.11** para el r
 ## 🗄 2️⃣ Configuración Base de Datos MySQL
 
 <p align="center">
-  <img src="assets/mysql-config.png" width="800"/>
+  <img src="forohub/assets/mysql-config.png" width="800"/>
 </p>
 
 ---
@@ -28,7 +28,7 @@ API REST profesional desarrollada con **Java 17 + Spring Boot 3.5.11** para el r
 ## ✅ Test 1 – Registrar Usuario
 
 <p align="center">
-  <img src="assets/RegistrarUsuario.png" width="800"/>
+  <img src="forohub/assets/RegistrarUsuario.png" width="800"/>
 </p>
 
 ---
@@ -36,7 +36,7 @@ API REST profesional desarrollada con **Java 17 + Spring Boot 3.5.11** para el r
 ## ✅ Test 2 – Login y Obtener Token JWT
 
 <p align="center">
-  <img src="assets/LoginObtenerToken.png" width="800"/>
+  <img src="forohub/assets/LoginObtenerToken.png" width="800"/>
 </p>
 
 ---
@@ -46,7 +46,7 @@ API REST profesional desarrollada con **Java 17 + Spring Boot 3.5.11** para el r
 ## ✅ Test 3 – Crear Tópico
 
 <p align="center">
-  <img src="assets/POST-CrearTopico.png" width="800"/>
+  <img src="forohub/assets/POST-CrearTopico.png" width="800"/>
 </p>
 
 ---
@@ -54,7 +54,7 @@ API REST profesional desarrollada con **Java 17 + Spring Boot 3.5.11** para el r
 ## ✅ Test 4 – Listar Tópicos
 
 <p align="center">
-  <img src="assets/GET-ListarTopicos.png" width="800"/>
+  <img src="forohub/assets/GET-ListarTopicos.png" width="800"/>
 </p>
 
 ---
@@ -62,7 +62,7 @@ API REST profesional desarrollada con **Java 17 + Spring Boot 3.5.11** para el r
 ## ✅ Test 5 – Obtener Tópico por ID
 
 <p align="center">
-  <img src="assets/GET-ObtenerTopico.png" width="800"/>
+  <img src="forohub/assets/GET-ObtenerTopico.png" width="800"/>
 </p>
 
 ---
@@ -70,7 +70,7 @@ API REST profesional desarrollada con **Java 17 + Spring Boot 3.5.11** para el r
 ## ✅ Test 6 – Actualizar Tópico
 
 <p align="center">
-  <img src="assets/PUT-ActualizarTopico.png" width="800"/>
+  <img src="forohub/assets/PUT-ActualizarTopico.png" width="800"/>
 </p>
 
 ---
@@ -78,7 +78,7 @@ API REST profesional desarrollada con **Java 17 + Spring Boot 3.5.11** para el r
 ## ✅ Test 7 – Eliminar Tópico
 
 <p align="center">
-  <img src="assets/DELETE-EliminarTopico.png" width="800"/>
+  <img src="forohub/assets/DELETE-EliminarTopico.png" width="800"/>
 </p>
 
 ---
