@@ -183,16 +183,16 @@ Flyway ejecutará automáticamente las migraciones y creará todas las tablas al
 ```json
 // Request Body
 {
-  "nombre": "Juan Pérez",
-  "correoElectronico": "juan@example.com",
-  "contrasena": "miPassword123"
+  "nombre": "Jean Pool",
+  "correoElectronico": "jean@example.com",
+  "contrasena": "123456"
 }
 
 // Response 200 OK
 {
   "id": 1,
-  "nombre": "Juan Pérez",
-  "correoElectronico": "juan@example.com"
+  "nombre": "Jean Pool",
+  "correoElectronico": "jean@example.com"
 }
 ```
 
@@ -202,8 +202,8 @@ Flyway ejecutará automáticamente las migraciones y creará todas las tablas al
 ```json
 // Request Body
 {
-  "correoElectronico": "juan@example.com",
-  "contrasena": "miPassword123"
+  "correoElectronico": "jean@example.com",
+  "contrasena": "123456"
 }
 
 // Response 200 OK
@@ -237,8 +237,8 @@ Todos los endpoints requieren autenticación JWT.
   "mensaje": "Tengo problemas configurando Spring Security con JWT...",
   "fechaCreacion": "2026-03-02T22:00:00",
   "status": "NO_RESPONDIDO",
-  "autorNombre": "Juan Pérez",
-  "autorCorreo": "juan@example.com",
+  "autorNombre": "Jean Pool",
+  "autorCorreo": "jean@example.com",
   "cursoNombre": "Java Spring Boot",
   "cursoCategoria": "Backend"
 }
@@ -347,5 +347,4 @@ src/main/java/com/gvjeanpool/forohub/
 
 ## 👨‍💻 Autor
 
-**GV-JeanPool** – Reto ForoHub Challenge – Alura 2026  
-🔗 [GitHub del Proyecto](https://github.com/GV-JeanPool/ForoHub-Challenge-BackEnd)
+**GV-JeanPool** – ForoHub Challenge – Alura 2026  
